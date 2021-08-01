@@ -4,10 +4,19 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="~/css/StyleSheet.css" />
+    <link rel="stylesheet" href="~/css/bootstrap.min.css" />
 </head>
 <body>
+    <header>
+        @Html.ActionLink("Home", "Index", "Home")
+        @Html.ActionLink("Student", "Index", "Students")
+        @Html.ActionLink("Community", "Index", "Communities")
+        @Html.ActionLink("Ad", "Index", "Ads")
+    </header>
     <div>
         @RenderBody()
     </div>
+    @RenderSection("Scripts", required: false)
 </body>
 </html>
