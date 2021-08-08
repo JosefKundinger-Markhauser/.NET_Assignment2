@@ -20,6 +20,11 @@ namespace Assignment2.Controllers
             _context = context;
         }
 
+        public IActionResult Ads(string id)
+        {
+            return RedirectToAction(nameof(Index), "Ads", new { id = id });
+        }
+
         // GET: Communities
         public async Task<IActionResult> Index(string? id)
         {

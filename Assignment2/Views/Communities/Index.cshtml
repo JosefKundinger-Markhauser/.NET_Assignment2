@@ -33,6 +33,7 @@
                 </td>
                 <td>
                     <a asp-action="Index" asp-route-id="@item.Id">Select</a> |
+                    <a asp-action="Ads" asp-route-id="@item.Id">Ads</a> |
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                     <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                     <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
@@ -44,29 +45,30 @@
 
 @if (Model.Students != null)
 {
-<tbody>
-    <tr>
+<table>
+    <tbody>
+
         @if (Model.Students.Count() == 0)
         {
-            <p>
-                No students associated to this community
-            </p>
+            <tr>
+                <th>
+                    No students associated to this community
+                </th>
+            </tr>
         }
         else
         {
-        <tr>
             @foreach (var stu in Model.Students)
             {
+            <tr>
 
                 <td>
                     @Html.DisplayFor(ModelItem => stu.FullName);
                 </td>
-
-            }
-        </tr>
-        }
-    </tr>
-
+            </tr>
+             }
+         }
+                
     </tbody>
-
+</table>
 }
