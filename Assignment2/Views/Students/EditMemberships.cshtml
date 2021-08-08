@@ -1,0 +1,68 @@
+﻿@model Assignment2.Models.ViewModels.EditMembershipViewModel
+
+@{
+    ViewData["Title"] = "Edit Memberships";
+    bool registered = false;
+}
+
+<h1>Edit</h1>
+
+<h4>Memberships</h4>
+<hr />
+<div>
+    <table>
+        <thead>
+            <tr>
+                <th>FullName</th>
+                <th>@Html.DisplayName(Model.Student.FullName);</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+<div>
+    <table>
+        <thead>
+            <tr>
+                <th>Community</th>
+                <th>Regiser</th>
+            </tr>
+            @foreach(var com in Model.Communities)
+            {
+                registered=false;
+                <tr>
+                    <td>@Html.DisplayName(com.Title)</td>
+
+                    @foreach (var comem in Model.CommunityMemberships)
+                    {
+                        @if (comem.CommunityId == com.Id)
+                        {
+                            registered = true;
+                        }
+                    }
+                    @if (registered)
+                    {
+                        <td>
+                            <a asp-action="Registration" asp-route-id="@Model.Student.Id" asp-route-comid="@com.Id" asp-route-register="@false">Unregister</a>
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            <a asp-action="Registration" asp-route-id="@Model.Student.Id" asp-route-comid="@com.Id" asp-route-register="@true">Register</a>
+                        </td>
+                    }
+
+                </tr>
+            }
+        </thead>
+    </table>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
