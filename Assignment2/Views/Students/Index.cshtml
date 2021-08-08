@@ -46,23 +46,32 @@
                 </td>
             </tr>
         }
-}
+        }
     </tbody>
 </table>
 
 @if (Model.Communities != null)
 {
-    @if (Model.Communities.Count() == 0)
-    {
-        <p>No communities associated to this student</p>
-    }
-    else
-    {
-        @foreach (var com in Model.Communities)
+<tbody>
+    <tr>
+        @if (Model.Communities.Count() == 0)
         {
-          @Html.DisplayFor(ModelItem => com.Title);
-
+            <p>No communities associated to this student</p>
         }
-    }
 
+        else
+        {
+        <tr>
+            @foreach (var com in Model.Communities)
+            {
+
+                <td>
+                    @Html.DisplayFor(ModelItem => com.Title);
+                </td>
+
+            }
+        </tr>
+        }
+    </tr>
+    </tbody>
 }

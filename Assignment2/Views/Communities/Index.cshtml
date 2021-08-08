@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Assignment2.Models.Community>
+﻿@model Assignment2.Models.ViewModels.CommunityViewModel
 
 @{
     ViewData["Title"] = "Index";
@@ -13,29 +13,60 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Title)
+                Title
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Budget)
+                Budget
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Budget)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.Communities)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Budget)
+                </td>
+                <td>
+                    <a asp-action="Index" asp-route-id="@item.Id">Select</a> |
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+@if (Model.Students != null)
+{
+<tbody>
+    <tr>
+        @if (Model.Students.Count() == 0)
+        {
+            <p>
+                No students associated to this community
+            </p>
+        }
+        else
+        {
+        <tr>
+            @foreach (var stu in Model.Students)
+            {
+
+                <td>
+                    @Html.DisplayFor(ModelItem => stu.FullName);
+                </td>
+
+            }
+        </tr>
+        }
+    </tr>
+
+    </tbody>
+
+}
