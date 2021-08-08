@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Assignment2.Data;
 using Assignment2.Models;
+using Assignment2.Models.ViewModels;
 
 namespace Assignment2.Controllers
 {
@@ -79,6 +80,45 @@ namespace Assignment2.Controllers
                 return NotFound();
             }
             return View(student);
+        }
+
+        // GET: Students/Edit/5
+        public async Task<IActionResult> EditMemberships(int id)
+        {
+            var student = await _context.Students.FindAsync(id);
+            if (student == null)
+            {
+                return NotFound();
+            }
+
+            var viewModel = new EditMembershipViewModel
+            {
+                Communities = await _context.Communities.ToListAsync(),
+                Student = student,
+                CommunityMemberships = await _context.CommunityMemberships.Where(i => i.StudentId == id).ToListAsync()
+            };
+            return View(viewModel);
+        }
+
+        public async Task<IActionResult> Registration(int id, string comid, bool register)
+        {
+            CommunityMembership mem = new CommunityMembership
+            {
+                StudentId = id,
+                CommunityId = comid
+            };
+            if (register)
+            {
+                _context.CommunityMemberships.Add(mem);
+            }
+            else
+            {
+                mem = await _context.CommunityMemberships.FindAsync(id, comid);
+                _context.Remove(mem);
+            }
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(EditMemberships), "Students", new { id = id });
         }
 
         // POST: Students/Edit/5
