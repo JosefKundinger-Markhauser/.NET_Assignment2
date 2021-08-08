@@ -21,10 +21,35 @@ namespace Assignment2.Controllers
         }
 
         // GET: Students
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id)
         {
-            return View(await _context.Students.ToListAsync());
+
+            StudentViewModel viewModel = new StudentViewModel
+            {
+                Students = await _context.Students.ToListAsync() //get full list of studenets
+
+            };
+           
+            if (id != null)
+            {
+                List<Community> Communities = new List<Community>();
+                List<CommunityMembership> Memberships = await _context.CommunityMemberships.ToListAsync();
+                foreach(var mem in Memberships)
+                {
+                    if (mem.StudentId == id)
+                    {
+                        Communities.Add(await _context.Communities.FindAsync(mem.CommunityId));
+                    }
+                }
+
+                viewModel.Communities = Communities;
+            }
+            return View(viewModel);
+
+
         }
+
+        
 
         // GET: Students/Details/5
         public async Task<IActionResult> Details(int? id)
