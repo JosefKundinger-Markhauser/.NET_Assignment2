@@ -1,41 +1,51 @@
-﻿@model IEnumerable<Assignment2.Models.Ad>
+﻿@model Assignment2.Models.ViewModels.AdsViewModel;
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Show ads for Community @Model.Community.Title.ToString()</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" asp-route-id="@Model.Community.Id">Create New</a>
 </p>
+
+@if (Model.Ads.Count() == 0)
+{
+    <p>There are no Ads for this community</p>
+}
+else
+{
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.FileName)
+                File Name
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Url)
+                Image
             </th>
             <th></th>
         </tr>
     </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.FileName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Url)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.AdId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.AdId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.AdId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
 </table>
+
+@foreach (var image in Model.Ads)
+{
+        <dl>
+            <dt>
+                @Html.DisplayFor(modelItem => image.FileName)
+            </dt>
+            <dd>
+                <img src="@image.Url" style="max-width: 400px;"/>
+            </dd>
+            <dt>
+                <a asp-action="Edit" asp-route-id="@image.AdId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@image.AdId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@image.AdId">Delete</a>
+            </dt>
+        </dl>
+}
+
+
+}

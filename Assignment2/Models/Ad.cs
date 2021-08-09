@@ -17,13 +17,15 @@ namespace Assignment2.Models
         [Required]
         [DataType(DataType.Text)]
         [Display(Name = "File Name")]
-        [StringLength(50, MinimumLength = 5)]
         public string FileName { get; set; }
 
         [Required]
         [DataType(DataType.Url)]
         [Display(Name = "Image")]
         public string Url { get; set; }
+
+        [Required]
+        public string communityId { get; set; }
 
     }
 }

@@ -1,4 +1,5 @@
 using Assignment2.Data;
+using Azure.Storage.Blobs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -28,6 +29,10 @@ namespace Assignment2
         {
             var connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<SchoolCommunityAdsContext>(options => options.UseSqlServer(connection));
+
+            var blobConnection = Configuration.GetConnectionString("assign2storage");
+            services.AddSingleton(new BlobServiceClient(blobConnection));
+
             services.AddControllersWithViews();
 
         }
