@@ -1,10 +1,10 @@
 ﻿@model Assignment2.Models.ViewModels.CommunityViewModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Communities";
 }
 
-<h1>Index</h1>
+<h1>Communities</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -45,30 +45,33 @@
 
 @if (Model.Students != null)
 {
-<table>
-    <tbody>
+    <h2>Members of the Community</h2>
 
-        @if (Model.Students.Count() == 0)
+    @if (Model.Students.Count() == 0)
+    {
+        <h4>No membership record exists</h4>
+    }
+
+    <table>
+        @if (Model.Students.Count() > 0)
         {
-            <tr>
-                <th>
-                    No students associated to this community
-                </th>
-            </tr>
+            <thead>
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var std in Model.Students)
+                {
+                    <tr>
+                        <td>
+                            @std.FullName
+                        </td>
+                    </tr>
+                }
+            </tbody>
         }
-        else
-        {
-            @foreach (var stu in Model.Students)
-            {
-            <tr>
-
-                <td>
-                    @Html.DisplayFor(ModelItem => stu.FullName);
-                </td>
-            </tr>
-             }
-         }
-                
-    </tbody>
-</table>
+    </table>
 }

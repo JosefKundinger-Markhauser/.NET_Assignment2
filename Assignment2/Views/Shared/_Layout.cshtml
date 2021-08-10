@@ -4,18 +4,22 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
-    <link rel="stylesheet" href="~/css/StyleSheet.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/css/bootstrap.min.css" />
 </head>
 <body>
     <header>
-        @Html.ActionLink("Home", "Index", "Home")
-        @Html.ActionLink("Student", "Index", "Students")
-        @Html.ActionLink("Community", "Index", "Communities")
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <a class="navbar-brand display-2" asp-area="" asp-controller="Home" asp-action="Index">Lab5</a>
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+            <a class="navbar-brand" asp-area="" asp-controller="Students" asp-action="Index">Students</a>
+            <a class="navbar-brand" asp-area="" asp-controller="Communities" asp-action="Index">Communities</a>
+        </nav>
     </header>
-    <div>
-        @RenderBody()
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
     </div>
-    @RenderSection("Scripts", required: false)
 </body>
 </html>
