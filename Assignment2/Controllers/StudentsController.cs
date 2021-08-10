@@ -23,10 +23,12 @@ namespace Assignment2.Controllers
         // GET: Students
         public async Task<IActionResult> Index(int? id)
         {
+            List<Student> students = new List<Student>();
+            students = await _context.Students.ToListAsync();
 
             StudentViewModel viewModel = new StudentViewModel
             {
-                Students = await _context.Students.ToListAsync() //get full list of studenets
+                Students = students.OrderBy(x => x.LastName) //get full list of studenets
 
             };
            
@@ -42,11 +44,9 @@ namespace Assignment2.Controllers
                     }
                 }
 
-                viewModel.Communities = Communities;
+                viewModel.Communities = Communities.OrderBy(x => x.Title);
             }
             return View(viewModel);
-
-
         }
 
         

@@ -26,15 +26,22 @@ namespace Assignment2.Controllers
             _blobServiceClient = blobServiceClient;
         }
 
+        public IActionResult BackToList(string id)
+        {
+            return RedirectToAction(nameof(Index), "Communities");
+        }
+
         // GET: Ads
         public async Task<IActionResult> Index(string id)
         {
+            List<Ad> ads = new List<Ad>();
+            ads = await _context.Ads.Where(i => i.communityId == id).ToListAsync();
+
             AdsViewModel viewModel = new AdsViewModel
             {
-                Ads = await _context.Ads.Where(i => i.communityId == id).ToListAsync(),
+                Ads = ads.OrderBy(x => x.FileName),
                 Community = await _context.Communities.FindAsync(id)
             };
-            
 
             return View(viewModel);
         }
@@ -205,15 +212,42 @@ namespace Assignment2.Controllers
             return View(ad);
         }
 
-        // POST: Ads/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var ad = await _context.Ads.FindAsync(id);
-            _context.Ads.Remove(ad);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            var image = await _context.Ads.FindAsync(id);
+            string containerName = "ads";
+
+            BlobContainerClient containerClient;
+            try
+            {
+                containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+            }
+            catch (RequestFailedException)
+            {
+                return View("Error");
+            }
+
+            try
+            {
+                // Get the blob that holds the data
+                var blockBlob = containerClient.GetBlobClient(image.FileName);
+                if (await blockBlob.ExistsAsync())
+                {
+                    await blockBlob.DeleteAsync();
+                }
+
+                _context.Ads.Remove(image);
+                await _context.SaveChangesAsync();
+
+            }
+            catch (RequestFailedException)
+            {
+                return View("Error");
+            }
+
+            return RedirectToAction("Index", "Ads", new { id = image.communityId });
         }
 
         private bool AdExists(int id)

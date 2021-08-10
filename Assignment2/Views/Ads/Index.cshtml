@@ -1,13 +1,17 @@
 ﻿@model Assignment2.Models.ViewModels.AdsViewModel;
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Ads";
 }
 
 <h1>Show ads for Community @Model.Community.Title.ToString()</h1>
 
 <p>
     <a asp-action="Create" asp-route-id="@Model.Community.Id">Create New</a>
+</p>
+
+<p>
+    <a asp-action="BackToList">Back to List</a>
 </p>
 
 @if (Model.Ads.Count() == 0)
@@ -28,24 +32,23 @@ else
             <th></th>
         </tr>
     </thead>
+
+    <tbody>
+        @foreach (var image in Model.Ads)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => image.FileName)
+                </td>
+                <td>
+                    <img src="@image.Url" style="max-width: 400px;" />
+                </td>
+                <td>
+                    <a asp-action="Delete" asp-route-id="@image.AdId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
 </table>
-
-@foreach (var image in Model.Ads)
-{
-        <dl>
-            <dt>
-                @Html.DisplayFor(modelItem => image.FileName)
-            </dt>
-            <dd>
-                <img src="@image.Url" style="max-width: 400px;"/>
-            </dd>
-            <dt>
-                <a asp-action="Edit" asp-route-id="@image.AdId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@image.AdId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@image.AdId">Delete</a>
-            </dt>
-        </dl>
-}
-
 
 }

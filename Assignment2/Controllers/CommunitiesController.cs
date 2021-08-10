@@ -28,10 +28,13 @@ namespace Assignment2.Controllers
         // GET: Communities
         public async Task<IActionResult> Index(string? id)
         {
+            List<Community> communities = new List<Community>();
+            communities = await _context.Communities.ToListAsync();
+
             CommunityViewModel viewModel = new CommunityViewModel()
             {
-                Communities = await _context.Communities.ToListAsync() //get full list of Communities
-              
+                Communities = communities.OrderBy(x => x.Title) //get full list of Communities
+
             };
 
             if (id != null)
@@ -46,7 +49,7 @@ namespace Assignment2.Controllers
                     }
                 }
 
-                viewModel.Students = Students;
+                viewModel.Students = Students.OrderBy(x => x.LastName);
             }
             return View(viewModel);
 
@@ -151,14 +154,25 @@ namespace Assignment2.Controllers
                 return NotFound();
             }
 
-            var community = await _context.Communities
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (community == null)
+            DeleteViewModel viewModel = new DeleteViewModel();
+
+            viewModel.Community = await _context.Communities.FirstOrDefaultAsync(m => m.Id == id);
+            if (viewModel.Community == null)
             {
                 return NotFound();
             }
 
-            return View(community);
+            var ads = await _context.Ads.Where(x => x.communityId == id).ToListAsync();
+            if (ads.Count() == 0)
+            {
+                viewModel.CanDelete = true;
+            }
+            else
+            {
+                viewModel.CanDelete = false;
+            }
+
+            return View(viewModel);
         }
 
         // POST: Communities/Delete/5
