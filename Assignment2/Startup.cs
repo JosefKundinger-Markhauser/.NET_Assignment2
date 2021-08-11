@@ -30,7 +30,7 @@ namespace Assignment2
             var connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<SchoolCommunityAdsContext>(options => options.UseSqlServer(connection));
 
-            var blobConnection = Configuration.GetConnectionString("assign2storage");
+            var blobConnection = Configuration.GetConnectionString("AzureBlobStorage");
             services.AddSingleton(new BlobServiceClient(blobConnection));
 
             services.AddControllersWithViews();

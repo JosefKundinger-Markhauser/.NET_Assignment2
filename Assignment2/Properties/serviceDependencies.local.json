@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/patrickczermakserver/databases/assign2db",
+      "type": "mssql.azure",
+      "connectionId": "DefaultConnection",
+      "secretStore": null
+    },
+    "storage1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Storage/storageAccounts/assign2storage",
+      "type": "storage.azure",
+      "connectionId": "AzureBlobStorage",
+      "secretStore": null
+    }
+  }
+}
